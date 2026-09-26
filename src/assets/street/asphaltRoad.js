@@ -172,7 +172,7 @@ export function createAsphaltRoad() {
   // —— 井盖 ×3（金属 + 环形压边，位于马路上）——
   const manholeMat = metal(0x787f88, 0.5, 0.72);
   const rimMat = metal(0x61686f, 0.55, 0.7);
-  for (const [mx, mz] of [[-8.5, 11.2], [-2, 11.5], [14.6, -6.0]]) {
+  for (const [mx, mz] of [[-8.5, 11.2], [-2, 11.5], [14.6, -9.0]]) {
     const cover = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.035, 28), manholeMat);
     cover.position.set(mx, ROAD_TOP + 0.017, mz);
     group.add(cover);
