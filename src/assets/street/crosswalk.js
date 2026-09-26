@@ -30,12 +30,12 @@ export function createCrosswalks() {
   const barGeo = new THREE.BoxGeometry(1, 0.012, 0.42); // 单位长条，实例缩放/旋转
   const barMat = toon('#ffffff');
 
-  // —— 斑马线 A：横条沿 X（跨主路 A，z∈[6.5,12.5]，正对便利店自动门 x=7.0）——
-  const specsA = barSpecs(6.8, 12.2, null, 0);
+  // —— 斑马线 A：横条沿 X（跨主路 A，z∈[8.1,14.3]，正对便利店自动门 x=7.0）——
+  const specsA = barSpecs(8.4, 14.0, null, 0);
   const instA = new THREE.InstancedMesh(barGeo, barMat, specsA.length);
 
-  // —— 斑马线 B：横条沿 Z（跨路 B，x∈[13.0,18.5]）——
-  const specsB = barSpecs(13.25, 18.25, null, Math.PI / 2);
+  // —— 斑马线 B：横条沿 Z（跨路 B，x∈[12.0,17.2]）——
+  const specsB = barSpecs(12.3, 16.9, null, Math.PI / 2);
   const instB = new THREE.InstancedMesh(barGeo, barMat, specsB.length);
 
   const m = new THREE.Matrix4();

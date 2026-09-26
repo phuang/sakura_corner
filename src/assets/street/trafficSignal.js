@@ -10,7 +10,7 @@ import { toon, metal } from '../../core/materials.js';
 import { addUpdater } from '../../core/animationRegistry.js';
 
 const BASE_Y = 0.05; // 位于街角人行道转角
-const X = 12.6, Z = 6.1; // 主路 A 与路 B 路口人行道转角
+const X = 11.6, Z = 7.7; // 主路 A 与路 B 路口人行道转角
 
 /** smoothstep 交叉淡化 */
 function cross(t, a, b) {

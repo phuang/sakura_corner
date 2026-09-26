@@ -11,8 +11,8 @@ import { toon, metal } from '../../core/materials.js';
 import { concreteTexture, woodPlankTexture } from '../../core/textures.js';
 
 export const POLES = [
-  { x: -12, z: 0.6 },   // A（西侧）
-  { x: 12.2, z: 1.0 },  // B（东侧人行道，靠近路 B 西侧路缘）
+  { x: -12, z: 0.6 },    // A（西侧）
+  { x: 11.25, z: 2.4 },  // B（东侧人行道，靠近路 B 西侧路缘）
 ];
 export const ARM_YS = [8.3, 7.7];    // 双横担高度
 export const INS_OFFSET = 1.15;      // 绝缘子自杆心横向偏移（沿横担端部）

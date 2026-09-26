@@ -163,18 +163,18 @@ function plant(factory, seed, x, y, z) {
 }
 plant(createYoshinoCherry, 7, -14.5, 0.05, 0.8);   // T1 染井吉野樱（大，西侧主景）
 plant(createYoshinoCherry, 13, -9.3, 0.05, 1.4);   // T2 染井吉野樱
-plant(createLateCherry, 21, 11.25, 0.05, -6.5);    // L2 晚樱（东侧人行道树池内）
+plant(createLateCherry, 21, 10.75, 0.05, -6.5);    // L2 晚樱（东侧人行道树池内）
 plant(createYoshinoCherry, 29, -4, 0, -16);        // T3 染井吉野樱（背景大树，轨道后方）
-plant(createLateCherry, 37, 11.25, 0.05, 1.0);     // L1 晚樱（东侧人行道树池内）
+plant(createLateCherry, 37, 10.75, 0.05, 1.0);     // L1 晚樱（东侧人行道树池内）
 
 // —— 樱花动态系统：飘落 / 空中飞舞 / 地面堆积随风移动 ——
 createPetalSystem(scene, {
   trees: [
     { x: -14.5, z: 0.8, crownY: 6.3, crownR: 2.7 },   // T1
     { x: -9.3, z: 1.4, crownY: 6.0, crownR: 2.4 },    // T2
-    { x: 11.25, z: -6.5, crownY: 4.9, crownR: 2.0 },  // L2
+    { x: 10.75, z: -6.5, crownY: 4.9, crownR: 2.0 },  // L2
     { x: -4, z: -16, crownY: 6.5, crownR: 2.9 },      // T3
-    { x: 11.25, z: 1.0, crownY: 4.7, crownR: 1.9 },   // L1
+    { x: 10.75, z: 1.0, crownY: 4.7, crownR: 1.9 },   // L1
   ],
   seed: 301,
 });

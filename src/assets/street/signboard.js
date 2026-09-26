@@ -69,7 +69,7 @@ export function createSignboard() {
   const group = new THREE.Group();
   group.name = 'signboard';
 
-  const X = 5.2, Z = 6.0; // 斑马线 A 西侧（主路 A 边缘人行道）
+  const X = 5.2, Z = 7.6; // 斑马线 A 西侧（主路 A 边缘人行道）
 
   // —— 底座压盘 + 立杆 ——
   const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.21, 0.06, 20), toon('#b5b1a7'));
