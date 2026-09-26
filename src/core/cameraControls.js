@@ -58,9 +58,9 @@ export class OrbitRig {
     this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
     if (this.pointers.size === 1) {
-      // 单指/鼠标：旋转
+      // 单指/鼠标：旋转（拖拽方向 = 场景转动方向，与水平轴一致）
       this.goalTheta -= dx * 0.0052;
-      this.goalPhi += dy * 0.0038;
+      this.goalPhi -= dy * 0.0038; // 下拖 → 相机升高、俯视更多
       this.clampGoal();
     } else if (this.pointers.size === 2) {
       // 双指：捏合缩放（同时保留旋转中点）
