@@ -9,8 +9,8 @@ import * as THREE from 'three';
 import { toon, metal } from '../../core/materials.js';
 import { addUpdater } from '../../core/animationRegistry.js';
 
-const ROAD_TOP = 0.14;
-const X = 9.9, Z = 3.4; // 路口角（主路 A 边缘）
+const BASE_Y = 0.05; // 位于街角人行道转角
+const X = 12.6, Z = 6.1; // 主路 A 与路 B 路口人行道转角
 
 /** smoothstep 交叉淡化 */
 function cross(t, a, b) {
@@ -27,11 +27,11 @@ export function createTrafficSignal() {
 
   // —— 底座压盘 + 立杆 ——
   const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.23, 0.06, 20), toon('#b5b1a7'));
-  pad.position.set(X, ROAD_TOP + 0.03, Z);
+  pad.position.set(X, BASE_Y + 0.03, Z);
   group.add(pad);
 
   const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.056, 3.3, 14), poleMat);
-  pole.position.set(X, ROAD_TOP + 0.06 + 1.65, Z);
+  pole.position.set(X, BASE_Y + 0.06 + 1.65, Z);
   pole.castShadow = true;
   group.add(pole);
 
@@ -96,13 +96,13 @@ export function createTrafficSignal() {
   // —— 竖向头：朝西（-X），面向主路 A 来车 ——
   const headA = makeVerticalHead();
   headA.group.rotation.y = -Math.PI / 2; // +Z → -X
-  headA.group.position.set(X - 0.16, ROAD_TOP + 3.15, Z);
+  headA.group.position.set(X - 0.16, BASE_Y + 3.15, Z);
   group.add(headA.group);
 
   // —— 横向头：朝北（-Z），面向路 B 来车 ——
   const headB = makeHorizontalHead();
   headB.group.rotation.y = Math.PI; // +Z → -Z
-  headB.group.position.set(X, ROAD_TOP + 2.62, Z - 0.14);
+  headB.group.position.set(X, BASE_Y + 2.62, Z - 0.14);
   group.add(headB.group);
 
   // —— 红绿缓慢交叉淡化（双头相位错开半周期）——

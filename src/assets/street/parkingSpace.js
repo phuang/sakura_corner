@@ -49,26 +49,26 @@ export function createParkingSpaces() {
   const group = new THREE.Group();
   group.name = 'parkingSpace';
 
-  // —— 铺装底板（车位区 + 禁停带）——
+  // —— 铺装底板（车位区 + 禁停带，位于主路 A 南侧）——
   const pad = new THREE.Mesh(
-    new THREE.BoxGeometry(12.0, PAD_TOP, 3.4),
+    new THREE.BoxGeometry(12.0, PAD_TOP, 3.6),
     toon('#ffffff', { map: concreteTexture(131, '#c6c2b7') })
   );
-  pad.position.set(-8.2, PAD_TOP / 2, 10.3); // x∈[-14.2,-2.2], z∈[8.6,12]
+  pad.position.set(-8.2, PAD_TOP / 2, 14.6); // x∈[-14.2,-2.2], z∈[12.8,16.4]
   pad.receiveShadow = true;
   group.add(pad);
 
   const lineMat = toon('#dedbd1'); // 磨损白漆
 
-  // —— 车位前沿线（沿 X，z=8.95）——
+  // —— 车位前沿线（沿 X，z=12.95）——
   const frontLine = new THREE.Mesh(new THREE.BoxGeometry(10, 0.012, 0.13), lineMat);
-  frontLine.position.set(-8, PAD_TOP + 0.006, 8.95);
+  frontLine.position.set(-8, PAD_TOP + 0.006, 12.95);
   group.add(frontLine);
 
-  // —— 分隔立线 ×4（x=-13 / -9.67 / -6.33 / -3，z∈[8.95,11.4]）——
+  // —— 分隔立线 ×4（x=-13 / -9.67 / -6.33 / -3，z∈[12.95,15.4]）——
   for (const x of [-13, -9.67, -6.33, -3]) {
     const line = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.012, 2.45), lineMat);
-    line.position.set(x, PAD_TOP + 0.006, 10.175);
+    line.position.set(x, PAD_TOP + 0.006, 14.175);
     group.add(line);
   }
 
@@ -77,7 +77,7 @@ export function createParkingSpaces() {
     new THREE.BoxGeometry(0.9, 0.012, 2.7),
     toon('#ffffff', { map: hatchTexture() })
   );
-  hatch.position.set(-13.6, PAD_TOP + 0.006, 10.25);
+  hatch.position.set(-13.6, PAD_TOP + 0.006, 14.25);
   group.add(hatch);
 
   return group;

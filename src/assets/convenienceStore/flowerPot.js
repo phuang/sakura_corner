@@ -11,8 +11,8 @@ import { toon } from '../../core/materials.js';
 const SIDEWALK_TOP = 0.05;
 const POTS = [
   { x: 9.8, z: -1.7, seed: 411 },
-  { x: 0.7, z: 2.5, seed: 421 },
-  { x: 1.7, z: 2.5, seed: 431 },
+  { x: 0.7, z: 4.8, seed: 421 },
+  { x: 1.7, z: 4.8, seed: 431 },
 ];
 
 function rng(seed) {

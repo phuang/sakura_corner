@@ -45,7 +45,7 @@ export function createGuardrails() {
   group.add(trackFence);
 
   // —— 路口 B 角短护栏（路 B 北端，沿 X）——
-  const cornerRail = railRun({ x: 13.25, z: -18.6, len: 4.7, rotY: 0, baseY: ROAD_TOP, posts: 4 });
+  const cornerRail = railRun({ x: 15.75, z: -18.6, len: 4.7, rotY: 0, baseY: ROAD_TOP, posts: 4 });
   group.add(cornerRail);
 
   return group;

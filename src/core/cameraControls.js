@@ -13,12 +13,12 @@ export class OrbitRig {
     this.dom = dom;
 
     // 观察目标点（街角中心略偏上）
-    this.target = new THREE.Vector3(0.5, 1.6, -1.2);
+    this.target = new THREE.Vector3(1.0, 1.6, 0.8);
 
     // 球坐标状态：theta=方位角, phi=极角(自 +Y), radius=距离
     this.theta = Math.PI * 0.27;      // 默认东南向视角
     this.phi = 1.04;                  // 约 32° 仰角
-    this.radius = 36;
+    this.radius = 38;
 
     // 目标值（阻尼插值）
     this.goalTheta = this.theta;

@@ -14,8 +14,8 @@ import { rng, makePetalGeometry } from './treeBuilder.js';
 /** 场景地面高度（与布局一致：站台/道路/人行道） */
 function groundY(x, z) {
   if (x >= -17 && x <= 9 && z >= -5.5 && z <= -2) return 0.46; // 站台顶面
-  if (z >= 3 && z <= 8.5) return 0.14;                          // 主路 A
-  if (x >= 10.5 && x <= 16 && z < 3) return 0.14;               // 路 B
+  if (z >= 6.5 && z <= 12.5) return 0.14;                       // 主路 A
+  if (x >= 13.0 && x <= 18.5 && z < 6.5) return 0.14;           // 路 B
   return 0.05;                                                  // 人行道/底座顶面
 }
 

@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { toon, metal } from '../../core/materials.js';
 
-const ROAD_TOP = 0.14; // 立杆落于主路 A 边缘沥青面
+const BASE_Y = 0.05; // 立杆落于主路 A 北侧人行道面
 
 /** 圆形转向标志：蓝底 + 白环 + 白色右转箭头 */
 function arrowSignTexture() {
@@ -69,15 +69,15 @@ export function createSignboard() {
   const group = new THREE.Group();
   group.name = 'signboard';
 
-  const X = 5.2, Z = 3.1; // 斑马线 A 西侧（主路 A 边缘）
+  const X = 5.2, Z = 6.0; // 斑马线 A 西侧（主路 A 边缘人行道）
 
   // —— 底座压盘 + 立杆 ——
   const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.21, 0.06, 20), toon('#b5b1a7'));
-  pad.position.set(X, ROAD_TOP + 0.03, Z);
+  pad.position.set(X, BASE_Y + 0.03, Z);
   group.add(pad);
 
   const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.05, 2.5, 14), metal(0x6d737b, 0.45, 0.8));
-  pole.position.set(X, ROAD_TOP + 0.06 + 1.25, Z);
+  pole.position.set(X, BASE_Y + 0.06 + 1.25, Z);
   pole.castShadow = true;
   group.add(pole);
 
@@ -86,11 +86,11 @@ export function createSignboard() {
     new THREE.CircleGeometry(0.3, 40),
     toon('#ffffff', { map: arrowSignTexture() })
   );
-  signR.position.set(X, ROAD_TOP + 2.62, Z); // 面向 +Z（主路方向）
+  signR.position.set(X, BASE_Y + 2.62, Z); // 面向 +Z（主路方向）
   group.add(signR);
 
   const rim = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.018, 8, 40), metal(0xd7dbe0, 0.4, 0.7));
-  rim.position.set(X, ROAD_TOP + 2.62, Z);
+  rim.position.set(X, BASE_Y + 2.62, Z);
   group.add(rim);
 
   // —— 方形 V 形指示牌（下）——
@@ -98,11 +98,11 @@ export function createSignboard() {
     new THREE.BoxGeometry(0.46, 0.34, 0.03),
     toon('#ffffff', { map: chevronSignTexture() })
   );
-  signSq.position.set(X, ROAD_TOP + 2.12, Z);
+  signSq.position.set(X, BASE_Y + 2.12, Z);
   group.add(signSq);
 
   const frame = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.38, 0.02), metal(0x6d737b, 0.45, 0.8));
-  frame.position.set(X, ROAD_TOP + 2.12, Z - 0.012);
+  frame.position.set(X, BASE_Y + 2.12, Z - 0.012);
   group.add(frame);
 
   return group;

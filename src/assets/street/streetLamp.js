@@ -11,8 +11,8 @@ import { breathing } from '../../core/lighting.js';
 
 const SIDEWALK_TOP = 0.05;
 const LAMPS = [
-  { x: 10.2, z: 2.6, phase: 0 },
-  { x: -6.8, z: 2.7, phase: 2.1 },
+  { x: 12.3, z: 5.7, phase: 0 },
+  { x: -6.8, z: 5.7, phase: 2.1 },
 ];
 
 function makeLamp({ x, z, phase }) {

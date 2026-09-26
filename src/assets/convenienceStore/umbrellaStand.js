@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { toon, metal } from '../../core/materials.js';
 
-const X = 9.68, Z = 2.45;
+const X = 9.2, Z = 3.5;
 const SIDEWALK_TOP = 0.05;
 
 const UMBRELLA_COLORS = ['#d95b4a', '#4a7fd9', '#f2b04e', '#5aa05a',

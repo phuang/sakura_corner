@@ -10,7 +10,7 @@ import * as THREE from 'three';
 import { toon } from '../../core/materials.js';
 import { grimeOverlay } from '../../core/textures.js';
 
-const Z = 1.0;
+const Z = 3.6;
 const SIDEWALK_TOP = 0.05;
 const BINS = [
   { x: 0.4, lid: '#d95b4a' }, // 红：可燃

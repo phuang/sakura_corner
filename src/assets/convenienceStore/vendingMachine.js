@@ -10,7 +10,7 @@ import * as THREE from 'three';
 import { toon, metal, glass, emissive } from '../../core/materials.js';
 import { breathing } from '../../core/lighting.js';
 
-const X = 9.95, Z = 1.8;
+const X = 10.4, Z = 2.0;
 const SIDEWALK_TOP = 0.05;
 const YAW = -0.35; // 正面朝南偏西
 

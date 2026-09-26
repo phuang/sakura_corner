@@ -24,10 +24,10 @@ export function createDrainageGutter() {
   }
   const grateGeo = mergeGeometries(parts, false);
 
-  // —— 布设位置：主路 A 北侧（z=2.95，x -18→10）+ 路 B 西侧（x=10.45，z -18→2）——
+  // —— 布设位置：主路 A 北侧（z=6.45，x -18→12）+ 路 B 西侧（x=12.95，z -18→6）——
   const spots = [];
-  for (let x = -18; x <= 10; x += 4) spots.push({ x, z: 2.95, rot: 0 });
-  for (let z = -18; z <= 2; z += 4) spots.push({ x: 10.45, z, rot: Math.PI / 2 });
+  for (let x = -18; x <= 12; x += 4) spots.push({ x, z: 6.45, rot: 0 });
+  for (let z = -18; z <= 6; z += 4) spots.push({ x: 12.95, z, rot: Math.PI / 2 });
 
   const grateMat = metal(0x4a4f55, 0.55, 0.7);
   const inst = new THREE.InstancedMesh(grateGeo, grateMat, spots.length);
