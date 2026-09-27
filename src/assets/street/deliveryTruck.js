@@ -81,13 +81,14 @@ export function createDeliveryTruck() {
 
   // —— 货箱侧面装饰图案（彩色条纹 + 樱花 + 几何图形）——
   const decoY = WHEEL_R + 0.18;
+  const sideOffset = CARGO_W / 2 + 0.05; // 向外偏移 0.05，避免 z-fighting
   
   // 底部彩色条纹带（青绿 + 暖红 + 米黄，与场景配色呼应）
   const stripeColors = ['#84b59a', '#c26d5e', '#f5e6d3'];
   const stripeH = 0.12;
   for (let i = 0; i < 3; i++) {
     const stripeMat = toon(stripeColors[i]);
-    const stripeGeo = new THREE.BoxGeometry(cargoL - 0.2, stripeH, CARGO_W + 0.04);
+    const stripeGeo = new THREE.BoxGeometry(cargoL - 0.2, stripeH, CARGO_W + 0.1);
     const stripe = new THREE.Mesh(stripeGeo, stripeMat);
     stripe.position.set(cargo.position.x, decoY + 0.15 + i * (stripeH + 0.03), 0);
     truck.add(stripe);
@@ -103,7 +104,7 @@ export function createDeliveryTruck() {
       petal.position.set(
         cargo.position.x + i * 0.6,
         decoY + cargoH * 0.55,
-        side * (CARGO_W / 2 + 0.01)
+        side * sideOffset
       );
       truck.add(petal);
     }
@@ -115,13 +116,13 @@ export function createDeliveryTruck() {
   for (const side of [-1, 1]) {
     const logoMat = toon('#84b59a');
     const logo = new THREE.Mesh(logoGeo, logoMat);
-    logo.position.set(cargo.position.x, decoY + cargoH * 0.6, side * (CARGO_W / 2 + 0.01));
+    logo.position.set(cargo.position.x, decoY + cargoH * 0.6, side * sideOffset);
     truck.add(logo);
   }
 
   // 顶部装饰线条（细白线，增加层次感）
   const topLineMat = toon('#ffffff');
-  const topLineGeo = new THREE.BoxGeometry(cargoL - 0.3, 0.04, CARGO_W + 0.02);
+  const topLineGeo = new THREE.BoxGeometry(cargoL - 0.3, 0.04, CARGO_W + 0.1);
   const topLine = new THREE.Mesh(topLineGeo, topLineMat);
   topLine.position.set(cargo.position.x, decoY + cargoH - 0.15, 0);
   truck.add(topLine);
