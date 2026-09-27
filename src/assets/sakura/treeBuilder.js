@@ -165,10 +165,13 @@ export function scatterPetals({ center, radius, count = 60, seed = 4, petalGeo }
 
 /**
  * 微风摆动：对枢轴组做小角度正弦旋转（各枝条相位/频率错开）。
+ * 在基础旋转之上叠加微小振荡，不覆盖已有的倾斜角度。
  */
 export function registerSway(pivots, { amp = 0.028, speed = 0.5 } = {}) {
   const items = pivots.map((p) => ({
     pivot: p,
+    baseX: p.rotation.x,   // 记录基础倾斜角
+    baseZ: p.rotation.z,   // 记录基础 Z 旋转
     axisX: (Math.random() - 0.5),
     axisZ: (Math.random() - 0.5),
     phase: Math.random() * Math.PI * 2,
@@ -177,8 +180,8 @@ export function registerSway(pivots, { amp = 0.028, speed = 0.5 } = {}) {
   addUpdater((t) => {
     for (const it of items) {
       const a = amp * Math.sin(t * speed * it.speedMul + it.phase);
-      it.pivot.rotation.x = it.axisX * a;
-      it.pivot.rotation.z = it.axisZ * a;
+      it.pivot.rotation.x = it.baseX + it.axisX * a; // 基础倾斜 + 微摆
+      it.pivot.rotation.z = it.baseZ + it.axisZ * a;
     }
   });
 }
