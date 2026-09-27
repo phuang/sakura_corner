@@ -171,7 +171,8 @@ export function createBicycles() {
 
   spots.forEach((sp, i) => {
     const bike = createBicycle({ seed: i + 1 });
-    bike.position.set(sp.x, SIDEWALK_TOP, sp.z);
+    // SIDEWALK_TOP + 0.035：补偿轮胎管径（TorusGeometry tube radius），使胎底贴合地面
+    bike.position.set(sp.x, SIDEWALK_TOP + 0.035, sp.z);
     bike.rotation.y = sp.yaw;
     if (sp.lean) bike.rotation.z = sp.lean; // 靠墙倾斜（世界 Z 轴）
     group.add(bike);
