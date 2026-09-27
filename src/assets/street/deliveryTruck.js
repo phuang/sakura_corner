@@ -94,24 +94,25 @@ export function createDeliveryTruck() {
     truck.add(stripe);
   }
 
-  // 樱花图案 ×3（粉色花瓣簇，围绕中央圆形标识）
+  // 樱花图案 ×3（粉色花瓣簇，位于绿色圆圈内部）
   const sakuraMat = toon('#f4c2c2'); // 樱粉色
-  const logoCenterY = decoY + cargoH * 0.6; // 圆形标识中心高度
+  const logoCenterX = cargo.position.x;
+  const logoCenterY = decoY + cargoH * 0.6; // 圆形标识中心高度（半径 0.35）
   for (const side of [-1, 1]) {
-    // 三朵樱花围绕圆圈：左、上、右（呈弧形分布）
+    // 三朵小花在圆圈内部呈三角分布（距中心 < 0.2，远在半径 0.35 内）
     const sakuraPositions = [
-      { dx: -0.5, dy: 0.2 },   // 左上
-      { dx: 0, dy: 0.45 },     // 正上方
-      { dx: 0.5, dy: 0.2 },    // 右上
+      { dx: -0.14, dy: 0.08 },   // 左下
+      { dx: 0, dy: -0.16 },      // 正下方
+      { dx: 0.14, dy: 0.08 },    // 右下
     ];
     for (const pos of sakuraPositions) {
-      const petalGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.02, 5); // 五边形花瓣
+      const petalGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.02, 5); // 五边形小花（缩小）
       petalGeo.rotateX(Math.PI / 2); // 轴沿 Z，圆盘面朝侧面
       const petal = new THREE.Mesh(petalGeo, sakuraMat);
       petal.position.set(
-        cargo.position.x + pos.dx,
+        logoCenterX + pos.dx,
         logoCenterY + pos.dy,
-        side * (sideOffset + 0.02) // 向外偏移，避免与圆圈重叠
+        side * (sideOffset + 0.02) // 略前于圆圈，避免 z-fighting
       );
       truck.add(petal);
     }
@@ -163,16 +164,15 @@ export function createDeliveryTruck() {
     truck.add(headlight);
   }
 
-  // —— 尾灯 ×2（红色，位于货箱后部边缘）——
+  // —— 尾灯 ×2（红色，贴在货箱后表面外侧）——
   const taillightGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.03, 16);
-  taillightGeo.rotateZ(Math.PI / 2);
-  // 货箱中心 X + 货箱半长 - 余量
+  taillightGeo.rotateZ(Math.PI / 2); // 轴沿 X，圆盘面朝后方
   const cargoCenterX = (BODY_L / 2 - cabinL - 0.3) / 2 + 0.15;
-  const cargoRearX = cargoCenterX + cargoL / 2 - 0.1; // 货箱后边缘内侧 0.1
+  const cargoRearSurfaceX = cargoCenterX + cargoL / 2; // 货箱后表面 X = 1.4
   for (const dz of [-CARGO_W / 2 + 0.3, CARGO_W / 2 - 0.3]) {
     const tlMat = toon('#c45a4f');
     const taillight = new THREE.Mesh(taillightGeo, tlMat);
-    taillight.position.set(cargoRearX, WHEEL_R + 0.6, dz);
+    taillight.position.set(cargoRearSurfaceX + 0.02, WHEEL_R + 0.6, dz); // 紧贴后表面外侧
     truck.add(taillight);
   }
 
