@@ -94,18 +94,24 @@ export function createDeliveryTruck() {
     truck.add(stripe);
   }
 
-  // 樱花图案 ×3（粉色花瓣簇，平贴在货箱侧面，位置避开中央圆形标识）
+  // 樱花图案 ×3（粉色花瓣簇，围绕中央圆形标识）
   const sakuraMat = toon('#f4c2c2'); // 樱粉色
+  const logoCenterY = decoY + cargoH * 0.6; // 圆形标识中心高度
   for (const side of [-1, 1]) {
-    for (let i = -1; i <= 1; i++) {
+    // 三朵樱花围绕圆圈：左、上、右（呈弧形分布）
+    const sakuraPositions = [
+      { dx: -0.5, dy: 0.2 },   // 左上
+      { dx: 0, dy: 0.45 },     // 正上方
+      { dx: 0.5, dy: 0.2 },    // 右上
+    ];
+    for (const pos of sakuraPositions) {
       const petalGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.02, 5); // 五边形花瓣
       petalGeo.rotateX(Math.PI / 2); // 轴沿 Z，圆盘面朝侧面
       const petal = new THREE.Mesh(petalGeo, sakuraMat);
-      // 樱花位置：y 方向错开（上方），x 方向分散
       petal.position.set(
-        cargo.position.x + i * 0.7,
-        decoY + cargoH * 0.75, // 比圆形标识高 0.15
-        side * (sideOffset + 0.02) // 再向外偏移一点，避免重叠
+        cargo.position.x + pos.dx,
+        logoCenterY + pos.dy,
+        side * (sideOffset + 0.02) // 向外偏移，避免与圆圈重叠
       );
       truck.add(petal);
     }
@@ -160,11 +166,13 @@ export function createDeliveryTruck() {
   // —— 尾灯 ×2（红色，位于货箱后部边缘）——
   const taillightGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.03, 16);
   taillightGeo.rotateZ(Math.PI / 2);
+  // 货箱中心 X + 货箱半长 - 余量
+  const cargoCenterX = (BODY_L / 2 - cabinL - 0.3) / 2 + 0.15;
+  const cargoRearX = cargoCenterX + cargoL / 2 - 0.1; // 货箱后边缘内侧 0.1
   for (const dz of [-CARGO_W / 2 + 0.3, CARGO_W / 2 - 0.3]) {
     const tlMat = toon('#c45a4f');
     const taillight = new THREE.Mesh(taillightGeo, tlMat);
-    // 尾灯位置：货箱后边缘（BODY_L/2 - 0.15），不要超出车身
-    taillight.position.set(BODY_L / 2 - 0.15, WHEEL_R + 0.6, dz);
+    taillight.position.set(cargoRearX, WHEEL_R + 0.6, dz);
     truck.add(taillight);
   }
 
