@@ -14,7 +14,7 @@ const FLOOR_Y = 0.15;
 const X_A = 7.6, X_B = 9.3;      // 宽度范围（北墙）
 const W = X_B - X_A;             // 1.7
 const DEPTH = 0.85;
-const Z_BACK = -4.32;            // 贴北墙内表面
+const Z_BACK = -4.30;            // 距北墙内表面留 0.02 间隙，避免 z-fighting
 const Z_C = Z_BACK + DEPTH / 2;  // -3.895
 const H = 2.1;                   // 柜高
 const SHELF_YS = [0.42, 0.82, 1.22, 1.62]; // 层板顶面（相对 FLOOR_Y）
