@@ -158,8 +158,8 @@ add(createBicycles());
 
 // —— 送货小货车（主路 A 北侧路边停靠，车头朝西）——
 const truck = createDeliveryTruck();
-truck.position.set(5.0, 0, 9.2);
-truck.rotation.y = Math.PI; // 车头朝西（-X）
+truck.position.set(4.0, 0, 9.2);
+truck.rotation.y = 0; // 车头朝西（-X），局部 -X 方向
 scene.add(truck);
 
 // —— 樱花树（局部原点 = 树干基部，按布局落位）——
