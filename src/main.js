@@ -156,9 +156,9 @@ add(createPosterBoard());
 add(createBikeRacks());
 add(createBicycles());
 
-// —— 送货小货车（便利店南侧路边，车头朝西）——
+// —— 送货小货车（主路 A 北侧路边停靠，车头朝西）——
 const truck = createDeliveryTruck();
-truck.position.set(6.0, 0, 7.8);
+truck.position.set(5.0, 0, 9.2);
 truck.rotation.y = Math.PI; // 车头朝西（-X）
 scene.add(truck);
 
