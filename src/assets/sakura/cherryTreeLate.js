@@ -56,32 +56,43 @@ export function createLateCherry({ seed = 201 } = {}) {
     branchTips.push(pivot.position.clone().add(tipLocal));
   }
 
-  // —— 花冠：密实浑圆（更多小团块堆叠）——
-  const crownCenter = new THREE.Vector3((r() - 0.5) * 0.3, height + 0.6 + r() * 0.25, (r() - 0.5) * 0.3);
+  // —— 花冠：密实浑圆，中心包裹所有枝端 ——
+  const crownCenter = new THREE.Vector3((r() - 0.5) * 0.25, height + 0.15 + r() * 0.15, (r() - 0.5) * 0.25);
   const crownR = 1.75 + r() * 0.4;
 
+  // 主体团块：先确保每个枝端都有花冠，再填充冠层
   const puffs = [];
-  const nPuffBase = 17 + Math.floor(r() * 6);
-  for (let i = 0; i < nPuffBase; i++) {
-    let c;
-    if (i < branchTips.length && r() > 0.4) {
-      const t = branchTips[i % branchTips.length];
-      c = new THREE.Vector3(
-        t.x + (r() - 0.5) * 1.0,
-        Math.max(t.y, crownCenter.y - 0.3),
-        t.z + (r() - 0.5) * 1.0
+
+  // 第一步：每根树枝末端放置 1~2 个团块（保证花长在枝头）
+  for (let i = 0; i < branchTips.length; i++) {
+    const t = branchTips[i];
+    const nAtTip = 1 + Math.floor(r() * 2);
+    for (let j = 0; j < nAtTip; j++) {
+      const c = new THREE.Vector3(
+        t.x + (r() - 0.5) * 0.5,
+        t.y + (r() - 0.5) * 0.3, // 紧贴枝端
+        t.z + (r() - 0.5) * 0.5
       );
-    } else {
-      const theta = r() * Math.PI * 2;
-      const phi = Math.acos(1 - r());
-      c = new THREE.Vector3(
-        crownCenter.x + Math.sin(phi) * Math.cos(theta) * crownR * (0.5 + r() * 0.45),
-        crownCenter.y + Math.abs(Math.cos(phi)) * crownR * 0.6,
-        crownCenter.z + Math.sin(phi) * Math.sin(theta) * crownR * (0.5 + r() * 0.45)
-      );
+      const rad = 0.75 + r() * 0.5;
+      const puff = makeCanopyPuff({ radius: rad, seed: seed * 19 + i * 3 + j, color: COLOR_BASE });
+      puff.position.copy(c);
+      group.add(puff);
+      puffs.push({ c, rad });
     }
-    const rad = 0.7 + r() * 0.55; // 团块更小更密
-    const puff = makeCanopyPuff({ radius: rad, seed: seed * 19 + i, color: COLOR_BASE });
+  }
+
+  // 第二步：填充冠层其余部分（密实堆叠）
+  const nFill = 14 + Math.floor(r() * 6);
+  for (let i = 0; i < nFill; i++) {
+    const theta = r() * Math.PI * 2;
+    const phi = Math.acos(1 - r());
+    const c = new THREE.Vector3(
+      crownCenter.x + Math.sin(phi) * Math.cos(theta) * crownR * (0.5 + r() * 0.4),
+      crownCenter.y + Math.abs(Math.cos(phi)) * crownR * 0.6,
+      crownCenter.z + Math.sin(phi) * Math.sin(theta) * crownR * (0.5 + r() * 0.4)
+    );
+    const rad = 0.7 + r() * 0.5;
+    const puff = makeCanopyPuff({ radius: rad, seed: seed * 37 + i, color: COLOR_BASE });
     puff.position.copy(c);
     group.add(puff);
     puffs.push({ c, rad });

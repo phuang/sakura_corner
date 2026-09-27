@@ -59,34 +59,43 @@ export function createYoshinoCherry({ seed = 101 } = {}) {
     branchTips.push(pivot.position.clone().add(tipLocal));
   }
 
-  // —— 花冠：扁圆冠层，中心位于树干顶端上方 ——
-  const crownCenter = new THREE.Vector3((r() - 0.5) * 0.4, height + 0.75 + r() * 0.3, (r() - 0.5) * 0.4);
+  // —— 花冠：扁圆冠层，中心包裹所有枝端 ——
+  const crownCenter = new THREE.Vector3((r() - 0.5) * 0.3, height + 0.2 + r() * 0.2, (r() - 0.5) * 0.3);
   const crownR = 2.1 + r() * 0.6;
 
-  // 主体团块（围绕冠心 + 枝端分布）
+  // 主体团块：先确保每个枝端都有花冠，再填充冠层
   const puffs = [];
-  const nPuffBase = 13 + Math.floor(r() * 5);
-  for (let i = 0; i < nPuffBase; i++) {
-    // 在扁球壳上取点：部分锚定枝端，其余填充冠层
-    let c;
-    if (i < branchTips.length && r() > 0.35) {
-      const t = branchTips[i % branchTips.length];
-      c = new THREE.Vector3(
-        t.x + (r() - 0.5) * 1.2,
-        Math.max(t.y, crownCenter.y - 0.4),
-        t.z + (r() - 0.5) * 1.2
+  
+  // 第一步：每根树枝末端放置 1~2 个团块（保证花长在枝头）
+  for (let i = 0; i < branchTips.length; i++) {
+    const t = branchTips[i];
+    const nAtTip = 1 + Math.floor(r() * 2); // 每枝端 1~2 个团块
+    for (let j = 0; j < nAtTip; j++) {
+      const c = new THREE.Vector3(
+        t.x + (r() - 0.5) * 0.6,
+        t.y + (r() - 0.5) * 0.4, // 紧贴枝端，不强制上移
+        t.z + (r() - 0.5) * 0.6
       );
-    } else {
-      const theta = r() * Math.PI * 2;
-      const phi = Math.acos(1 - r()); // 球面均匀
-      c = new THREE.Vector3(
-        crownCenter.x + Math.sin(phi) * Math.cos(theta) * crownR * (0.55 + r() * 0.4),
-        crownCenter.y + Math.abs(Math.cos(phi)) * crownR * 0.62,
-        crownCenter.z + Math.sin(phi) * Math.sin(theta) * crownR * (0.55 + r() * 0.4)
-      );
+      const rad = 0.9 + r() * 0.7;
+      const puff = makeCanopyPuff({ radius: rad, seed: seed * 17 + i * 3 + j, color: COLOR_BASE });
+      puff.position.copy(c);
+      group.add(puff);
+      puffs.push({ c, rad });
     }
-    const rad = 0.85 + r() * 0.75;
-    const puff = makeCanopyPuff({ radius: rad, seed: seed * 17 + i, color: COLOR_BASE });
+  }
+
+  // 第二步：填充冠层其余部分（围绕冠心）
+  const nFill = 10 + Math.floor(r() * 5);
+  for (let i = 0; i < nFill; i++) {
+    const theta = r() * Math.PI * 2;
+    const phi = Math.acos(1 - r()); // 球面均匀
+    const c = new THREE.Vector3(
+      crownCenter.x + Math.sin(phi) * Math.cos(theta) * crownR * (0.5 + r() * 0.4),
+      crownCenter.y + Math.abs(Math.cos(phi)) * crownR * 0.6,
+      crownCenter.z + Math.sin(phi) * Math.sin(theta) * crownR * (0.5 + r() * 0.4)
+    );
+    const rad = 0.85 + r() * 0.7;
+    const puff = makeCanopyPuff({ radius: rad, seed: seed * 31 + i, color: COLOR_BASE });
     puff.position.copy(c);
     group.add(puff);
     puffs.push({ c, rad });
