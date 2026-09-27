@@ -147,7 +147,7 @@ function createEndCap(facing) {
   });
   // 挡风玻璃（端面薄板，略内凹）
   const windshield = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.92, 1.86), winMat);
-  windshield.position.set(facing * (CAR_L / 2 - 0.03), yBase + 2.35, 0);
+  windshield.position.set(facing * (CAR_L / 2 + 0.02), yBase + 2.35, 0);
   cap.add(windshield);
 
   // 前照灯 ×2（暖光，呼吸）
@@ -156,7 +156,7 @@ function createEndCap(facing) {
   for (const dz of [-0.72, 0.72]) {
     const lampMat = emissive('#fff3d4', 1.5);
     const lamp = new THREE.Mesh(lampGeo, lampMat);
-    lamp.position.set(facing * (CAR_L / 2 - 0.02), yBase + 1.05, dz);
+    lamp.position.set(facing * (CAR_L / 2 + 0.07), yBase + 1.05, dz);
     cap.add(lamp);
     breathing(lampMat, { base: 1.35, amp: 0.25, speed: 0.7 });
   }
@@ -164,13 +164,13 @@ function createEndCap(facing) {
   // 目的地显示（琥珀发光条，呼吸）
   const destMat = emissive('#ffd9a0', 1.8);
   const dest = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.3, 1.25), destMat);
-  dest.position.set(facing * (CAR_L / 2 - 0.04), yBase + 3.02, 0);
+  dest.position.set(facing * (CAR_L / 2 + 0.01), yBase + 3.02, 0);
   cap.add(dest);
   breathing(destMat, { base: 1.7, amp: 0.3, speed: 0.5 });
 
   // 端部裙板收口
   const endSkirt = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.4, BODY_W - 0.2), toon('#4c5157'));
-  endSkirt.position.set(facing * (CAR_L / 2 - 0.06), yBase + 0.18, 0);
+  endSkirt.position.set(facing * (CAR_L / 2 + 0.03), yBase + 0.18, 0);
   cap.add(endSkirt);
 
   return cap;

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sakura Corner — Debug</title>
+  <style>
+    html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; background:#dceefb; }
+    #stage { display:block; width:100vw; height:100vh; touch-action:none; cursor:grab; }
+    #stage.dragging { cursor:grabbing; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <script type="module">
+    // Debug overlay: show camera params and allow quick toggles
+    const overlay = document.createElement('div');
+    Object.assign(overlay.style, {
+      position:'fixed', top:10, left:10, background:'rgba(0,0,0,0.7)', color:'#fff',
+      padding:'8px 12px', borderRadius:6, fontFamily:'monospace', fontSize:13, zIndex:999,
+      pointerEvents:'auto'
+    });
+    document.body.appendChild(overlay);
+
+    // Import main module and expose for debugging
+    import('./src/main.js').then(mod => {
+      window.__DEBUG = mod;
+      
+      // Add screenshot button
+      const btn = document.createElement('button');
+      Object.assign(btn.style, {
+        position:'fixed', top:10, right:10, padding:'8px 16px', 
+        background:'#4CAF50', color:'#fff', border:'none', borderRadius:6,
+        cursor:'pointer', zIndex:999, fontFamily:'monospace', fontSize:13
+      });
+      btn.textContent = '📸 Screenshot';
+      btn.onclick = () => {
+        // Get the composer's render target for highest quality
+        const canvas = document.getElementById('stage');
+        canvas.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'sakura-corner-debug.png';
+          a.click();
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      };
+      document.body.appendChild(btn);
+
+      // Add hide/show controls
+      const controls = document.createElement('div');
+      Object.assign(controls.style, {
+        position:'fixed', top:50, right:10, background:'rgba(0,0,0,0.7)', color:'#fff',
+        padding:'8px 12px', borderRadius:6, zIndex:999, fontFamily:'monospace', fontSize:13
+      });
+      
+      const trainGroup = scene.children.find(c => c.name === 'train');
+      if (trainGroup) {
+        const toggleTrain = document.createElement('button');
+        Object.assign(toggleTrain.style, { display:'block', margin:'4px 0', padding:'4px 8px', cursor:'pointer' });
+        toggleTrain.textContent = trainGroup.visible ? '🚂 Train: ON (click to hide)' : '🚂 Train: OFF (click to show)';
+        toggleTrain.onclick = () => {
+          trainGroup.visible = !trainGroup.visible;
+          toggleTrain.textContent = trainGroup.visible ? '🚂 Train: ON (click to hide)' : '🚂 Train: OFF (click to show)';
+        };
+        controls.appendChild(toggleTrain);
+      }
+      
+      document.body.appendChild(controls);
+      overlay.textContent = 'Debug mode — drag to orbit | Use buttons on right';
+    }).catch(err => {
+      overlay.textContent = 'Error: ' + err.message;
+    });
+
+    // Expose scene for debugging
+    let scene;
+    setTimeout(() => {
+      try {
+        // Find scene from renderer
+        const canvas = document.getElementById('stage');
+        // Scene is not directly exposed, but we can access it via the module
+      } catch(e) {}
+    }, 1000);
+  </script>
+</body>
+</html>
