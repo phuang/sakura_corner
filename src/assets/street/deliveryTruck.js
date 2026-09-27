@@ -45,17 +45,17 @@ export function createDeliveryTruck() {
   cabin.castShadow = true;
   truck.add(cabin);
 
-  // —— 驾驶室挡风玻璃（前部，透明）——
-  const windshieldGeo = new THREE.BoxGeometry(0.05, 0.7, CABIN_W - 0.35);
+  // —— 驾驶室挡风玻璃（前部，透明，外移避免 z-fighting）——
+  const windshieldGeo = new THREE.BoxGeometry(0.04, 0.7, CABIN_W - 0.35);
   const windshield = new THREE.Mesh(windshieldGeo, glassMat);
-  windshield.position.set(-(BODY_L / 2 + 0.02), WHEEL_R + 0.18 + cabinH * 0.62, 0);
+  windshield.position.set(-(BODY_L / 2 + 0.06), WHEEL_R + 0.18 + cabinH * 0.62, 0);
   truck.add(windshield);
 
-  // —— 驾驶室侧窗（左右各一，透明）——
-  const sideWinGeo = new THREE.BoxGeometry(0.85, 0.5, 0.04);
+  // —— 驾驶室侧窗（左右各一，透明，外移避免 z-fighting）——
+  const sideWinGeo = new THREE.BoxGeometry(0.85, 0.5, 0.03);
   for (const side of [-1, 1]) {
     const sideWin = new THREE.Mesh(sideWinGeo, glassMat);
-    sideWin.position.set(-(BODY_L / 2 - cabinL * 0.3), WHEEL_R + 0.18 + cabinH * 0.65, side * (CABIN_W / 2 + 0.02));
+    sideWin.position.set(-(BODY_L / 2 - cabinL * 0.3), WHEEL_R + 0.18 + cabinH * 0.65, side * (CABIN_W / 2 + 0.05));
     truck.add(sideWin);
   }
 
