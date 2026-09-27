@@ -78,8 +78,8 @@ function createCar(seed) {
       win.position.set(x, yBase + 2.15, side * zSide);
       car.add(win);
     }
-    // —— 滑动门（两端各一组双扇）——
-    for (const dx of [-3.6, 3.6]) {
+    // —— 滑动门（两端各一组双扇，距端盖留足间隙）——
+    for (const dx of [-3.3, 3.3]) {
       for (const panel of [-0.34, 0.34]) {
         const door = new THREE.Mesh(new THREE.BoxGeometry(0.62, 2.15, 0.04), doorMat);
         door.position.set(dx + panel, yBase + 1.18, side * zSide);
