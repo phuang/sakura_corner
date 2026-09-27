@@ -38,10 +38,13 @@ export function createYoshinoCherry({ seed = 101 } = {}) {
     const { pivot } = makeBranch({ length: len, baseRadius: 0.045 + r() * 0.02, seed: seed * 31 + i });
     // 方位角均布 + 随机扰动，斜上开展（花瓶形）
     const azim = (i / nBranches) * Math.PI * 2 + (r() - 0.5) * 0.9;
+    // 计算附着高度处树干实际半径（锥形收分公式与 makeTrunk 一致）
+    const attachT = attachH / height;
+    const trunkRadAtAttach = baseRadius * (1 - Math.pow(attachT, 1.35) * 0.86);
     pivot.position.set(
-      Math.cos(azim) * baseRadius * 1.6,
+      Math.cos(azim) * trunkRadAtAttach,
       attachH,
-      Math.sin(azim) * baseRadius * 1.6
+      Math.sin(azim) * trunkRadAtAttach
     );
     // 正确旋转：先转向方位角方向，再向外倾斜（花瓶形开展）
     const tilt = 0.5 + r() * 0.45; // 与竖直方向夹角（30°~55°）

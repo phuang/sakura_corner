@@ -37,10 +37,13 @@ export function createLateCherry({ seed = 201 } = {}) {
     const len = 1.3 + r() * 0.9;
     const { pivot } = makeBranch({ length: len, baseRadius: 0.042 + r() * 0.018, seed: seed * 41 + i });
     const azim = (i / nBranches) * Math.PI * 2 + (r() - 0.5) * 1.1;
+    // 计算附着高度处树干实际半径（锥形收分公式与 makeTrunk 一致）
+    const attachT = attachH / height;
+    const trunkRadAtAttach = baseRadius * (1 - Math.pow(attachT, 1.35) * 0.86);
     pivot.position.set(
-      Math.cos(azim) * baseRadius * 1.7,
+      Math.cos(azim) * trunkRadAtAttach,
       attachH,
-      Math.sin(azim) * baseRadius * 1.7
+      Math.sin(azim) * trunkRadAtAttach
     );
     const tilt = 0.55 + r() * 0.4; // 与竖直方向夹角（32°~55°）
     pivot.rotation.order = 'YXZ';
