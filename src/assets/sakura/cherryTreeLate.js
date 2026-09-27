@@ -42,9 +42,10 @@ export function createLateCherry({ seed = 201 } = {}) {
       attachH,
       Math.sin(azim) * baseRadius * 1.7
     );
-    const tilt = 0.62 + r() * 0.45;
-    pivot.rotation.z = (r() > 0.5 ? 1 : -1) * tilt;
-    pivot.rotation.x = Math.cos(azim) * tilt * 0.3;
+    const tilt = 0.55 + r() * 0.4; // 与竖直方向夹角（32°~55°）
+    pivot.rotation.order = 'YXZ';
+    pivot.rotation.y = azim;       // 水平朝向方位角
+    pivot.rotation.x = tilt;      // 从竖直向外倾斜
     group.add(pivot);
     branchPivots.push(pivot);
 

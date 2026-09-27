@@ -43,10 +43,11 @@ export function createYoshinoCherry({ seed = 101 } = {}) {
       attachH,
       Math.sin(azim) * baseRadius * 1.6
     );
-    // 先绕自身轴倾斜：外展 + 上举
-    const tilt = 0.55 + r() * 0.5; // 与竖直方向夹角
-    pivot.rotation.z = (r() > 0.5 ? 1 : -1) * tilt;
-    pivot.rotation.x = Math.cos(azim) * tilt * 0.35;
+    // 正确旋转：先转向方位角方向，再向外倾斜（花瓶形开展）
+    const tilt = 0.5 + r() * 0.45; // 与竖直方向夹角（30°~55°）
+    pivot.rotation.order = 'YXZ';
+    pivot.rotation.y = azim;       // 水平朝向方位角
+    pivot.rotation.x = tilt;      // 从竖直向外倾斜
     group.add(pivot);
     branchPivots.push(pivot);
 
