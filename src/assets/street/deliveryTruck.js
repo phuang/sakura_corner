@@ -9,7 +9,7 @@
  */
 
 import * as THREE from 'three';
-import { toon, metal } from '../../core/materials.js';
+import { toon, metal, glass } from '../../core/materials.js';
 
 const BODY_L = 4.2;    // 车身总长
 const CABIN_W = 1.8;   // 驾驶室宽
@@ -27,9 +27,7 @@ export function createDeliveryTruck() {
   const bodyMat = toon('#f5f2eb');      // 白色车身
   const cargoMat = toon('#e8e4dc');     // 货箱米白
   const darkMat = toon('#3a3f45');      // 深色底盘/保险杠
-  const glassMat = new THREE.MeshPhysicalMaterial({
-    color: 0x2c4756, metalness: 0.5, roughness: 0.15, envMapIntensity: 1.8,
-  });
+  const glassMat = glass({ tint: 0x2c4756, opacity: 0.35 }); // 透明玻璃（类似便利店）
   const wheelMat = metal(0x8f969e, 0.4, 0.85); // 金属轮毂
   const tireMat = toon('#2a2d30');       // 轮胎黑色
 
@@ -47,26 +45,32 @@ export function createDeliveryTruck() {
   cabin.castShadow = true;
   truck.add(cabin);
 
-  // —— 驾驶室挡风玻璃（前部倾斜）——
-  const windshieldGeo = new THREE.BoxGeometry(0.06, 0.75, CABIN_W - 0.3);
+  // —— 驾驶室挡风玻璃（前部，透明）——
+  const windshieldGeo = new THREE.BoxGeometry(0.05, 0.7, CABIN_W - 0.35);
   const windshield = new THREE.Mesh(windshieldGeo, glassMat);
-  windshield.position.set(-(BODY_L / 2 + 0.01), WHEEL_R + 0.18 + cabinH * 0.65, 0);
+  windshield.position.set(-(BODY_L / 2 + 0.02), WHEEL_R + 0.18 + cabinH * 0.62, 0);
   truck.add(windshield);
 
-  // —— 驾驶室侧窗（左右各一）——
-  const sideWinGeo = new THREE.BoxGeometry(0.9, 0.55, 0.04);
+  // —— 驾驶室侧窗（左右各一，透明）——
+  const sideWinGeo = new THREE.BoxGeometry(0.85, 0.5, 0.04);
   for (const side of [-1, 1]) {
     const sideWin = new THREE.Mesh(sideWinGeo, glassMat);
-    sideWin.position.set(-(BODY_L / 2 - cabinL * 0.3), WHEEL_R + 0.18 + cabinH * 0.65, side * (CABIN_W / 2 + 0.01));
+    sideWin.position.set(-(BODY_L / 2 - cabinL * 0.3), WHEEL_R + 0.18 + cabinH * 0.65, side * (CABIN_W / 2 + 0.02));
     truck.add(sideWin);
   }
 
-  // —— 后视镜（左右各一，小圆镜）——
-  const mirrorGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.03, 12);
+  // —— 后视镜（左右各一，带连接臂）——
+  const mirrorGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.03, 12);
   mirrorGeo.rotateZ(Math.PI / 2);
   for (const side of [-1, 1]) {
+    // 连接臂（从驾驶室侧面伸出）
+    const armGeo = new THREE.BoxGeometry(0.15, 0.03, 0.03);
+    const arm = new THREE.Mesh(armGeo, darkMat);
+    arm.position.set(-(BODY_L / 2 + 0.08), WHEEL_R + 0.18 + cabinH * 0.72, side * (CABIN_W / 2 + 0.05));
+    truck.add(arm);
+    // 镜面
     const mirror = new THREE.Mesh(mirrorGeo, darkMat);
-    mirror.position.set(-(BODY_L / 2 + 0.15), WHEEL_R + 0.18 + cabinH * 0.7, side * (CABIN_W / 2 + 0.1));
+    mirror.position.set(-(BODY_L / 2 + 0.18), WHEEL_R + 0.18 + cabinH * 0.72, side * (CABIN_W / 2 + 0.12));
     truck.add(mirror);
   }
 
@@ -154,13 +158,14 @@ export function createDeliveryTruck() {
     }
   }
 
-  // —— 前大灯 ×2（暖光）——
-  const headlightGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.04, 16);
-  headlightGeo.rotateZ(Math.PI / 2);
-  for (const dz of [-CABIN_W / 2 + 0.35, CABIN_W / 2 - 0.35]) {
+  // —— 前大灯 ×2（暖光，贴在驾驶室前脸）——
+  const headlightGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.05, 16);
+  headlightGeo.rotateZ(Math.PI / 2); // 轴沿 X，圆盘面朝前方
+  for (const dz of [-CABIN_W / 2 + 0.4, CABIN_W / 2 - 0.4]) {
     const hlMat = toon('#fff8e7');
     const headlight = new THREE.Mesh(headlightGeo, hlMat);
-    headlight.position.set(-(BODY_L / 2 + 0.01), WHEEL_R + 0.45, dz);
+    // 驾驶室前脸 X = -(BODY_L/2 - cabinL/2) - cabinL/2 = -BODY_L/2
+    headlight.position.set(-(BODY_L / 2 + 0.03), WHEEL_R + 0.45, dz);
     truck.add(headlight);
   }
 

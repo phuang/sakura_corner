@@ -158,7 +158,7 @@ add(createBicycles());
 
 // —— 送货小货车（主路 A 北侧路边停靠，车头朝西）——
 const truck = createDeliveryTruck();
-truck.position.set(4.0, 0, 9.2);
+truck.position.set(4.0, 0.14, 9.2); // y=0.14 对齐路面顶面
 truck.rotation.y = 0; // 车头朝西（-X），局部 -X 方向
 scene.add(truck);
 
