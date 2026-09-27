@@ -93,12 +93,12 @@ export function createDeliveryTruck() {
     truck.add(stripe);
   }
 
-  // 樱花图案 ×3（粉色花瓣簇，分布在货箱侧面）
+  // 樱花图案 ×3（粉色花瓣簇，平贴在货箱侧面）
   const sakuraMat = toon('#f4c2c2'); // 樱粉色
   for (const side of [-1, 1]) {
     for (let i = -1; i <= 1; i++) {
       const petalGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.02, 5); // 五边形花瓣
-      petalGeo.rotateZ(Math.PI / 2);
+      petalGeo.rotateX(Math.PI / 2); // 轴沿 Z，圆盘面朝侧面
       const petal = new THREE.Mesh(petalGeo, sakuraMat);
       petal.position.set(
         cargo.position.x + i * 0.6,
@@ -109,9 +109,9 @@ export function createDeliveryTruck() {
     }
   }
 
-  // 中央圆形品牌标识（青绿色，与场景腰线呼应）
+  // 中央圆形品牌标识（青绿色，平贴在货箱侧面）
   const logoGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.02, 24);
-  logoGeo.rotateZ(Math.PI / 2);
+  logoGeo.rotateX(Math.PI / 2); // 轴沿 Z，圆盘面朝侧面
   for (const side of [-1, 1]) {
     const logoMat = toon('#84b59a');
     const logo = new THREE.Mesh(logoGeo, logoMat);
