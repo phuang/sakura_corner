@@ -69,6 +69,7 @@ import { createAlleyEntrance } from './assets/street/alleyEntrance.js';
 import { createPosterBoard } from './assets/street/posterBoard.js';
 import { createBikeRacks } from './assets/street/bikeRack.js';
 import { createBicycles } from './assets/street/bicycle.js';
+import { createDeliveryTruck } from './assets/street/deliveryTruck.js';
 
 // —— 樱花系统 ——
 import { createYoshinoCherry } from './assets/sakura/cherryTreeYoshino.js';
@@ -154,6 +155,12 @@ add(createAlleyEntrance());
 add(createPosterBoard());
 add(createBikeRacks());
 add(createBicycles());
+
+// —— 送货小货车（便利店南侧路边，车头朝西）——
+const truck = createDeliveryTruck();
+truck.position.set(6.0, 0, 7.8);
+truck.rotation.y = Math.PI; // 车头朝西（-X）
+scene.add(truck);
 
 // —— 樱花树（局部原点 = 树干基部，按布局落位）——
 function plant(factory, seed, x, y, z) {
