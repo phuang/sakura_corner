@@ -45,13 +45,14 @@ export function createTracks() {
   const group = new THREE.Group();
   group.name = 'tracks';
 
-  // —— 道砟带（西端严格平齐底座边缘 x=-16.5）——
+  // —— 道砟带（西端严格平齐底座边缘 x=-16.5，南缘衔接站台前沿 z=-6.6，北缘至 z=-15.5）——
   const ballastLen = BALLAST_X1 - X_WEST;
+  const BALLAST_Z0 = -15.5, BALLAST_Z1 = -6.6;
   const ballast = new THREE.Mesh(
-    new THREE.BoxGeometry(ballastLen, BALLAST_TOP, 9.4),
+    new THREE.BoxGeometry(ballastLen, BALLAST_TOP, BALLAST_Z1 - BALLAST_Z0),
     toon('#8d857a', { map: concreteTexture(5, '#8d857a') })
   );
-  ballast.position.set((X_WEST + BALLAST_X1) / 2, BALLAST_TOP / 2, -10.4);
+  ballast.position.set((X_WEST + BALLAST_X1) / 2, BALLAST_TOP / 2, (BALLAST_Z0 + BALLAST_Z1) / 2);
   ballast.receiveShadow = true;
   group.add(ballast);
 

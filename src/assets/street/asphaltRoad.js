@@ -84,6 +84,15 @@ export function createAsphaltRoad() {
   walkEdgeE.receiveShadow = true;
   group.add(walkEdgeE);
 
+  // 6. 轨道后方背景地块（x∈[-16.5,9.5], z∈[-18.0,-15.5]，承载背景吉野樱 T3）
+  const groundBack = new THREE.Mesh(
+    new THREE.BoxGeometry(26.0, SIDEWALK_TOP, 2.5),
+    walkMat
+  );
+  groundBack.position.set(-3.5, SIDEWALK_TOP / 2, -16.75);
+  groundBack.receiveShadow = true;
+  group.add(groundBack);
+
   // 铺装分缝（细暗线，InstancedMesh）
   {
     const jointGeo = new THREE.BoxGeometry(1, 0.006, 0.024);

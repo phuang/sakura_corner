@@ -26,7 +26,7 @@ export class OrbitRig {
     this.goalPhi = this.phi;
     this.goalRadius = this.radius;
 
-    this.minPhi = 0.18;   // 接近顶视
+    this.minPhi = 0.02;   // 支持纯正顶俯视（鸟瞰）
     this.maxPhi = 1.52;   // 略低于地平线，防止穿入底座
     this.minRadius = 4.5;
     this.maxRadius = 95;

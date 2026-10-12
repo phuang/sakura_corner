@@ -40,8 +40,8 @@ export function createGuardrails() {
   const group = new THREE.Group();
   group.name = 'guardrail';
 
-  // —— 轨道尽头围栏（沿 Z，x=8.45）——
-  const trackFence = railRun({ x: 8.45, z: -10.25, len: 7.9, rotY: Math.PI / 2, baseY: BALLAST_TOP, posts: 5 });
+  // —— 轨道尽头围栏（沿 Z，x=8.45，南端收于站台前沿 z=-6.65）——
+  const trackFence = railRun({ x: 8.45, z: -10.425, len: 7.55, rotY: Math.PI / 2, baseY: BALLAST_TOP, posts: 5 });
   group.add(trackFence);
 
   // —— 路口 B 角短护栏（路 B 北端，沿 X）——
