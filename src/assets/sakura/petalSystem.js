@@ -13,7 +13,7 @@ import { rng, makePetalGeometry } from './treeBuilder.js';
 
 /** 场景地面高度（与布局一致：站台/道路/人行道） */
 function groundY(x, z) {
-  if (x >= -17 && x <= 9 && z >= -5.5 && z <= -2) return 0.46; // 站台顶面
+  if (x >= -16.5 && x <= 9 && z >= -5.5 && z <= -2) return 0.46; // 站台顶面
   if (z >= 8.1 && z <= 14.3) return 0.14;                       // 主路 A
   if (x >= 12.0 && x <= 17.2 && z < 8.1) return 0.14;           // 路 B
   return 0.05;                                                  // 人行道/底座顶面
@@ -98,10 +98,11 @@ export function createPetalSystem(scene, { trees, seed = 301 } = {}) {
       hx = tree.x + Math.cos(a) * rr;
       hz = tree.z + Math.sin(a) * rr;
     } else {
-      hx = -17 + r() * 32;
+      hx = -16.5 + r() * 32;
       hz = -5 + r() * 8.5; // 人行道带与路口区域
     }
-    if (Math.abs(hx) > 18.4 || Math.abs(hz) > 18.4) { hx *= 0.9; hz *= 0.9; }
+    if (hx < -16.5 || hx > 17.5) hx = -16.5 + r() * 34;
+    if (hz < -18.0 || hz > 16.0) hz = -18.0 + r() * 34;
     gst.push({
       hx, hz,
       phase: r() * Math.PI * 2,

@@ -16,9 +16,10 @@ export class OrbitRig {
     this.target = new THREE.Vector3(0.6, 1.6, 1.2);
 
     // 球坐标状态：theta=方位角, phi=极角(自 +Y), radius=距离
-    this.theta = Math.PI * 0.27;      // 默认东南向视角
-    this.phi = 1.04;                  // 约 32° 仰角
-    this.radius = 35;
+    const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    this.theta = params?.has('theta') ? parseFloat(params.get('theta')) : Math.PI * 0.27; // 默认东南向视角
+    this.phi = params?.has('phi') ? parseFloat(params.get('phi')) : 1.04;                 // 约 32° 仰角
+    this.radius = params?.has('radius') ? parseFloat(params.get('radius')) : 35;
 
     // 目标值（阻尼插值）
     this.goalTheta = this.theta;

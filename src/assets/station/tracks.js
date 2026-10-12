@@ -4,14 +4,16 @@
  * - 轨枕：InstancedMesh，0.7m 间距；
  * - 钢轨：真实 UIC 型断面挤出，写实金属材质（环境反射 + 高光）；
  * - 轨道尽头缓冲挡车器。
- * 布局：轨道1 轨心 z=-8（电车停靠线），轨道2 轨心 z=-12.5（侧线），x∈[-17,+8]。
+ * 布局：轨道1 轨心 z=-8（电车停靠线），轨道2 轨心 z=-12.5（侧线），西端齐平底座边缘 x=-16.5，东端至 x=+8。
  */
 
 import * as THREE from 'three';
 import { toon, metal } from '../../core/materials.js';
 import { concreteTexture } from '../../core/textures.js';
 
-const X0 = -17, X1 = 8;          // 轨道范围
+const X_WEST = -16.5;            // 西侧严格对齐底座边缘（消除悬空）
+const X1 = 8.0;                  // 轨道东端（挡车器位置）
+const BALLAST_X1 = 8.3;          // 道砟东端（略超出挡车器底座）
 const TRACKS = [ { z: -8 }, { z: -12.5 } ]; // 轨心线
 const GAUGE = 1.4;               // 轨距
 const BALLAST_TOP = 0.28;        // 道砟顶面高度
@@ -43,27 +45,29 @@ export function createTracks() {
   const group = new THREE.Group();
   group.name = 'tracks';
 
-  // —— 道砟带 ——
+  // —— 道砟带（西端严格平齐底座边缘 x=-16.5）——
+  const ballastLen = BALLAST_X1 - X_WEST;
   const ballast = new THREE.Mesh(
-    new THREE.BoxGeometry(X1 - X0 + 1.2, BALLAST_TOP, 9.4),
+    new THREE.BoxGeometry(ballastLen, BALLAST_TOP, 9.4),
     toon('#8d857a', { map: concreteTexture(5, '#8d857a') })
   );
-  ballast.position.set((X0 + X1) / 2 - 0.3, BALLAST_TOP / 2, -10.4);
+  ballast.position.set((X_WEST + BALLAST_X1) / 2, BALLAST_TOP / 2, -10.4);
   ballast.receiveShadow = true;
   group.add(ballast);
 
-  // —— 轨枕（InstancedMesh）——
+  // —— 轨枕（InstancedMesh，西端起始于 x=-16.3，胎基收于底座内）——
   const sleeperGeo = new THREE.BoxGeometry(0.26, 0.12, 2.7);
   const sleeperMat = toon('#5d4f42', { map: concreteTexture(9, '#5d4f42') });
   const spacing = 0.7;
-  const nPerTrack = Math.floor((X1 - X0) / spacing) + 1;
+  const sleeperStartX = -16.3;
+  const nPerTrack = Math.floor((7.6 - sleeperStartX) / spacing) + 1;
   const sleepers = new THREE.InstancedMesh(sleeperGeo, sleeperMat, nPerTrack * TRACKS.length);
   {
     const m = new THREE.Matrix4();
     let idx = 0;
     for (const tr of TRACKS) {
       for (let i = 0; i < nPerTrack; i++) {
-        const x = X0 + i * spacing;
+        const x = sleeperStartX + i * spacing;
         m.makeTranslation(x, BALLAST_TOP + 0.06, tr.z);
         sleepers.setMatrixAt(idx++, m);
       }
@@ -74,14 +78,15 @@ export function createTracks() {
   sleepers.receiveShadow = true;
   group.add(sleepers);
 
-  // —— 钢轨（写实金属，环境反射）——
-  const railGeo = makeRailGeometry(X1 - X0 + 0.6);
+  // —— 钢轨（写实金属，环境反射；西端齐平 x=-16.5，东端至挡车器 x=+8.0）——
+  const railLen = X1 - X_WEST;
+  const railGeo = makeRailGeometry(railLen);
   const railMat = metal(0xb9c0c8, 0.3, 0.92);
   for (const tr of TRACKS) {
     for (const side of [-1, 1]) {
       const rail = new THREE.Mesh(railGeo, railMat);
-      // 几何长度沿 +X，起点在 x=0 → 平移到 X0-0.3
-      rail.position.set(X0 - 0.3, BALLAST_TOP + 0.12, tr.z + side * GAUGE / 2);
+      // 几何长度沿 +X，起点在 x=0 → 平移到 X_WEST
+      rail.position.set(X_WEST, BALLAST_TOP + 0.12, tr.z + side * GAUGE / 2);
       rail.castShadow = true;
       group.add(rail);
     }
