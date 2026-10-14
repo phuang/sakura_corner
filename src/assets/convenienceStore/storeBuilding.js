@@ -64,13 +64,13 @@ export function createStoreBuilding() {
   skirtW.position.set(STORE.X0 - 0.015, 0.15, (STORE.Z0 + STORE.WALL_T + STORE.Z1) / 2);
   group.add(skirtW);
 
-  // —— 招牌带（fascia）：南段 + 东段，转角连续环绕 ——
+  // —— 招牌带（fascia）：南段 + 东段，转角连续环绕（南段止于东外墙，消除东南角重叠）——
   const fasciaMat = toon('#f8f3e9');
   const bandH = STORE.FASCIA_TOP - STORE.FASCIA_BOT; // 0.68
   const bandY = (STORE.FASCIA_BOT + STORE.FASCIA_TOP) / 2; // 3.96
 
-  const fasciaS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0 + 0.1, bandH, 0.1), fasciaMat);
-  fasciaS.position.set((STORE.X0 + STORE.X1 + 0.1) / 2, bandY, STORE.Z1 + 0.05);
+  const fasciaS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0, bandH, 0.1), fasciaMat);
+  fasciaS.position.set((STORE.X0 + STORE.X1) / 2, bandY, STORE.Z1 + 0.05);
   fasciaS.castShadow = true;
   group.add(fasciaS);
 
@@ -85,18 +85,18 @@ export function createStoreBuilding() {
   const stripeZ = STORE.Z1 + 0.1 + 0.008; // 南段条纹中心 z（凸出带面）
   const stripeX = STORE.X1 + 0.1 + 0.008; // 东段条纹中心 x
 
-  const greenS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0 + 0.1, 0.26, 0.016), greenMat);
-  greenS.position.set((STORE.X0 + STORE.X1 + 0.1) / 2, 4.01, stripeZ);
+  const greenS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0 + 0.116, 0.26, 0.016), greenMat);
+  greenS.position.set((STORE.X0 + STORE.X1 + 0.116) / 2, 4.01, stripeZ);
   group.add(greenS);
-  const coralS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0 + 0.1, 0.055, 0.016), coralMat);
-  coralS.position.set((STORE.X0 + STORE.X1 + 0.1) / 2, 3.7775, stripeZ);
+  const coralS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0 + 0.116, 0.055, 0.016), coralMat);
+  coralS.position.set((STORE.X0 + STORE.X1 + 0.116) / 2, 3.7775, stripeZ);
   group.add(coralS);
 
   const greenE = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.26, STORE.X1 - STORE.X0 + 0.1), greenMat);
-  greenE.position.set(stripeX, 4.01, (STORE.Z0 + STORE.Z1 + 0.1) / 2);
+  greenE.position.set(stripeX, 4.01, (STORE.Z0 + STORE.Z1) / 2);
   group.add(greenE);
   const coralE = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.055, STORE.X1 - STORE.X0 + 0.1), coralMat);
-  coralE.position.set(stripeX, 3.7775, (STORE.Z0 + STORE.Z1 + 0.1) / 2);
+  coralE.position.set(stripeX, 3.7775, (STORE.Z0 + STORE.Z1) / 2);
   group.add(coralE);
 
   // —— 抽象圆形徽记（樱粉，无文字）——
@@ -112,7 +112,7 @@ export function createStoreBuilding() {
   roof.receiveShadow = true;
   group.add(roof);
 
-  // —— 金属滴水檐口环（屋面顶缘收边）——
+  // —— 金属滴水檐口环（屋面顶缘收边，向上挤出坐落在屋面上方，杜绝与屋面板顶面共面）——
   {
     const outer = 3.95, inner = 3.86;
     const shape = new THREE.Shape();
@@ -129,9 +129,9 @@ export function createStoreBuilding() {
     hole.closePath();
     shape.holes.push(hole);
     const capGeo = new THREE.ExtrudeGeometry(shape, { depth: 0.1, bevelEnabled: false });
-    capGeo.rotateX(Math.PI / 2); // (x,y,z)→(x,-z,y)：厚度沿 +Y，shape.y → 世界 Z
+    capGeo.rotateX(-Math.PI / 2); // (x,y,z)→(x,z,-y)：厚度沿 +Y 向上，坐落于屋面上
     const cap = new THREE.Mesh(capGeo, metal(0xa9b0b8, 0.45, 0.7));
-    cap.position.set((STORE.X0 + STORE.X1) / 2, STORE.ROOF_TOP, (STORE.Z0 + STORE.Z1) / 2);
+    cap.position.set((STORE.X0 + STORE.X1) / 2, STORE.ROOF_TOP + 0.002, (STORE.Z0 + STORE.Z1) / 2);
     group.add(cap);
   }
 

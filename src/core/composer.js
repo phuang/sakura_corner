@@ -24,14 +24,14 @@ export function createComposer(renderer, scene, camera) {
   // —— 场景渲染 ——
   composer.addPass(new RenderPass(scene, camera));
 
-  // —— 动漫描边：可见轮廓深蓝灰、内部硬边缘浅淡，锐利干净 ——
+  // —— 动漫描边：可见轮廓深蓝灰，隐藏遮挡边缘不绘制(置黑)避免半透透射与交线闪烁 ——
   const outline = new OutlinePass(size.clone(), scene, camera);
   outline.edgeStrength = 4.2;
   outline.edgeGlow = 0.55;
   outline.edgeThickness = 1.35;
   outline.pulsePeriod = 0;
   outline.visibleEdgeColor.set('#33415e');
-  outline.hiddenEdgeColor.set('#a8b6cf');
+  outline.hiddenEdgeColor.set('#000000');
   composer.addPass(outline);
 
   // —— 春日空气光晕：低强度泛光，只拾取高亮（灯带/灯箱/阳光高光）——

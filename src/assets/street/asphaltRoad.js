@@ -57,12 +57,12 @@ export function createAsphaltRoad() {
   walkFront.receiveShadow = true;
   group.add(walkFront);
 
-  // 3. 便利店东侧人行道（x∈[9.5,12.0], z∈[-18.1,8.1]，承载晚樱树与树池）
+  // 3. 便利店东侧人行道（x∈[9.5,12.0], z∈[-18.1,3.0]，北段与店前人行道完美平接，杜绝 12.75m² 重合）
   const walkEast = new THREE.Mesh(
-    new THREE.BoxGeometry(2.5, SIDEWALK_TOP, 26.2),
+    new THREE.BoxGeometry(2.5, SIDEWALK_TOP, 21.1),
     walkMat
   );
-  walkEast.position.set(10.75, SIDEWALK_TOP / 2, -5.0);
+  walkEast.position.set(10.75, SIDEWALK_TOP / 2, -7.55);
   walkEast.receiveShadow = true;
   group.add(walkEast);
 
@@ -95,8 +95,8 @@ export function createAsphaltRoad() {
 
   // 铺装分缝（细暗线，InstancedMesh）
   {
-    const jointGeo = new THREE.BoxGeometry(1, 0.006, 0.024);
-    const jointMat = toon('#a9a59b');
+    const jointGeo = new THREE.BoxGeometry(1, 0.004, 0.024);
+    const jointMat = toon('#a9a59b', { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
     const joints = [];
     for (let x = -16; x <= 11; x += 2) joints.push({ x, z: 3.05, len: 10.1, rot: 0 }); // 西区纵向缝
     for (let x = 2; x <= 11; x += 2) joints.push({ x, z: 5.55, len: 5.1, rot: 0 });    // 店前纵向缝
@@ -112,7 +112,8 @@ export function createAsphaltRoad() {
       eul.set(0, j.rot, 0);
       q.setFromEuler(eul);
       s.set(j.len, 1, 1);
-      p.set(j.x, SIDEWALK_TOP + 0.003, j.z);
+      const dy = j.rot === 0 ? 0.0025 : 0.0035;
+      p.set(j.x, SIDEWALK_TOP + dy, j.z);
       m.compose(p, q, s);
       inst.setMatrixAt(i, m);
     });
@@ -137,12 +138,17 @@ export function createAsphaltRoad() {
   // —— 边缘白线（磨损：分段实例化 + 逐段色差/随机缺口）——
   {
     const segGeo = new THREE.BoxGeometry(1.9, 0.012, 0.13);
-    const segMat = toon('#ffffff');
+    const segMat = toon('#ffffff', { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
+    // 避开斑马线 A（x∈[5.0,9.0]）与斑马线 B（z∈[-5.5,-1.5]），避免同高度白漆共面闪烁
     const specs = [
-      { x0: -16.0, x1: 11.5, z: 8.45, rot: 0 },         // 主路 A 北缘
-      { x0: -16.0, x1: 17.0, z: 13.95, rot: 0 },        // 主路 A 南缘
-      { x0: 12.4, x1: 12.4, z0: -17.5, z1: 7.5, rot: Math.PI / 2 },  // 路 B 西缘
-      { x0: 16.8, x1: 16.8, z0: -17.5, z1: 13.5, rot: Math.PI / 2 }, // 路 B 东缘
+      { x0: -16.0, x1: 5.0, z: 8.45, rot: 0 },         // 主路 A 北缘西段
+      { x0: 9.0, x1: 11.5, z: 8.45, rot: 0 },          // 主路 A 北缘东段
+      { x0: -16.0, x1: 5.0, z: 13.95, rot: 0 },        // 主路 A 南缘西段
+      { x0: 9.0, x1: 17.0, z: 13.95, rot: 0 },         // 主路 A 南缘东段
+      { x0: 12.4, x1: 12.4, z0: -17.5, z1: -5.5, rot: Math.PI / 2 }, // 路 B 西缘北段
+      { x0: 12.4, x1: 12.4, z0: -1.5, z1: 7.5, rot: Math.PI / 2 },   // 路 B 西缘南段
+      { x0: 16.8, x1: 16.8, z0: -17.5, z1: -5.5, rot: Math.PI / 2 }, // 路 B 东缘北段
+      { x0: 16.8, x1: 16.8, z0: -1.5, z1: 13.5, rot: Math.PI / 2 },  // 路 B 东缘南段
     ];
     const items = [];
     for (const sp of specs) {

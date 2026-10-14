@@ -13,8 +13,8 @@ const FLOOR_Y = 0.15;
 const X_A = 2.4, X_B = 5.0;      // 宽度范围（北墙）
 const W = X_B - X_A;             // 2.6
 const DEPTH = 0.75;
-const Z_BACK = -4.32;            // 贴北墙内表面
-const Z_FRONT = Z_BACK + DEPTH;  // -3.57
+const Z_BACK = -4.30;            // 距北墙内表面(-4.32)留 0.02 间隙，避免 z-fighting
+const Z_FRONT = Z_BACK + DEPTH;  // -3.55
 const CAB_H = 1.0;               // 基础柜高
 const CASE_H = 1.0;              // 玻璃罩高
 

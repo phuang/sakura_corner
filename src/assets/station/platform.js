@@ -14,11 +14,11 @@ import { concreteTexture } from '../../core/textures.js';
 const TOP_Y = 0.45;
 const PLATFORM_NORTH = -6.55; // 紧贴电车门踏板（电车南壁 z=-6.68，间隙仅 13cm）
 
-// L 形站台分块（西端对齐底座西边缘 x=-16.5；北缘对齐电车门 z=-6.55；避让小巷 x∈[-1,+0.8] 与便利店 x≥+2,z≥-4.5）
+// L 形站台分块（西端对齐底座西边缘 x=-16.5；北缘对齐电车门 z=-6.55；嵌合入小巷外墙 2cm 消除边界共面闪烁）
 const SLABS = [
-  { x0: -16.5, x1: -1, z0: PLATFORM_NORTH, z1: -4.62 }, // A1 轨道侧带（西段，齐平底座 x=-16.5，紧贴电车）
-  { x0: 0.8, x1: 9.5, z0: PLATFORM_NORTH, z1: -4.5 },   // A2 轨道侧带（东段，紧贴电车与便利店北墙，东抵东人行道 x=9.5）
-  { x0: -16.5, x1: -1, z0: -4.62, z1: -2 },             // B1 候车区块（西段，齐平底座 x=-16.5）
+  { x0: -16.5, x1: -1.14, z0: PLATFORM_NORTH, z1: -4.62 }, // A1 轨道侧带（西段，齐平底座 x=-16.5，紧贴电车与小巷西墙嵌合）
+  { x0: 0.94, x1: 9.5, z0: PLATFORM_NORTH, z1: -4.5 },     // A2 轨道侧带（东段，紧贴电车与便利店北墙，东抵东人行道 x=9.5）
+  { x0: -16.5, x1: -1.14, z0: -4.62, z1: -2 },             // B1 候车区块（西段，齐平底座 x=-16.5，避让小巷西墙嵌合）
 ];
 
 export function createPlatform() {
@@ -93,11 +93,6 @@ export function createPlatform() {
   );
   endCap.position.set(9.5 + 0.06, (TOP_Y + 0.06) / 2 - 0.03, (PLATFORM_NORTH + -4.5) / 2);
   group.add(endCap);
-
-  // —— B1 东端立面收边（面向小巷，深灰压条）——
-  const bEdge = new THREE.Mesh(new THREE.BoxGeometry(0.03, TOP_Y, -2 - (-4.62)), toon('#a8a59b'));
-  bEdge.position.set(-1 + 0.015, TOP_Y / 2, (-4.62 + -2) / 2);
-  group.add(bEdge);
 
   return group;
 }

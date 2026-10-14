@@ -14,7 +14,7 @@ export function createBasePlatform() {
 
   const mat = toon('#f0e7d8'); // 纯色：暖米白（与春日樱花色调相衬）
   const slab = new THREE.Mesh(new THREE.BoxGeometry(BASE_SIZE, 1.5, BASE_SIZE), mat);
-  slab.position.set(0.5, -0.75, -1.0); // 居中于场景，南侧仅留 1m 紧凑边缘，消除多余留白
+  slab.position.set(0.5, -0.76, -1.0); // 顶面 y=-0.01（微沉 1cm 形成台座凹槽，彻底消除地表网格底面共面闪烁）
   slab.receiveShadow = true;
   group.add(slab);
 

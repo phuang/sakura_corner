@@ -79,7 +79,12 @@ import { createPetalSystem } from './assets/sakura/petalSystem.js';
 // ================= 渲染器 / 场景 / 相机 =================
 
 const canvas = document.getElementById('stage');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: false }); // MSAA×4 由合成器渲染目标承担
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  antialias: false,
+  logarithmicDepthBuffer: true,
+  powerPreference: 'high-performance'
+}); // MSAA×4 由合成器渲染目标承担，开启对数深度缓冲杜绝视锥体深度精度不足导致的 Z-fighting
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
@@ -88,7 +93,7 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 400);
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.5, 250);
 
 // PMREM + RoomEnvironment：金属/玻璃反射环境（无外部 HDR 依赖）
 {
@@ -156,9 +161,9 @@ add(createPosterBoard());
 add(createBikeRacks());
 add(createBicycles());
 
-// —— 送货小货车（主路 A 北侧路边停靠，车头朝西）——
+// —— 送货小货车（主路 A 北侧路边停靠，车头朝西，避让斑马线安全净距）——
 const truck = createDeliveryTruck();
-truck.position.set(4.0, 0.14, 9.2); // y=0.14 对齐路面顶面
+truck.position.set(2.8, 0.14, 9.2); // y=0.14 对齐路面顶面，车尾收于 x=4.9，距斑马线(x=5.2)留 30cm 净空
 truck.rotation.y = 0; // 车头朝西（-X），局部 -X 方向
 scene.add(truck);
 

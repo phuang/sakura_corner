@@ -111,9 +111,9 @@ function createCar(seed) {
     }
   }
 
-  // —— 裙板（车体下沿深色围板）——
+  // —— 裙板（车体下沿深色围板，微下延避免与车体底面共面）——
   const skirt = new THREE.Mesh(new THREE.BoxGeometry(CAR_L - 0.4, 0.36, BODY_W - 0.1), darkMat);
-  skirt.position.y = yBase + 0.18;
+  skirt.position.y = yBase + 0.16;
   car.add(skirt);
 
   // —— 转向架 ×2（可见车轮）——

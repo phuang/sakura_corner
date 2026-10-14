@@ -13,7 +13,7 @@ import { concreteTexture } from '../../core/textures.js';
 
 const X_WEST = -16.5;            // 西侧严格对齐底座边缘（消除悬空）
 const X1 = 8.0;                  // 轨道东端（挡车器位置）
-const BALLAST_X1 = 8.3;          // 道砟东端（略超出挡车器底座）
+const BALLAST_X1 = 9.5;          // 道砟东端（延展至东人行道西缘 x=9.5，与背景衬底及站台 A2 严密接缝）
 const TRACKS = [ { z: -8 }, { z: -12.5 } ]; // 轨心线
 const GAUGE = 1.4;               // 轨距
 const BALLAST_TOP = 0.28;        // 道砟顶面高度
@@ -56,8 +56,8 @@ export function createTracks() {
   ballast.receiveShadow = true;
   group.add(ballast);
 
-  // —— 轨枕（InstancedMesh，西端起始于 x=-16.3，胎基收于底座内）——
-  const sleeperGeo = new THREE.BoxGeometry(0.26, 0.12, 2.7);
+  // —— 轨枕（InstancedMesh，下底面微沉入道砟 2cm，顶面留 1mm 垫板间隙，消除共面闪烁）——
+  const sleeperGeo = new THREE.BoxGeometry(0.26, 0.14, 2.7);
   const sleeperMat = toon('#5d4f42', { map: concreteTexture(9, '#5d4f42') });
   const spacing = 0.7;
   const sleeperStartX = -16.3;
@@ -69,7 +69,7 @@ export function createTracks() {
     for (const tr of TRACKS) {
       for (let i = 0; i < nPerTrack; i++) {
         const x = sleeperStartX + i * spacing;
-        m.makeTranslation(x, BALLAST_TOP + 0.06, tr.z);
+        m.makeTranslation(x, BALLAST_TOP + 0.049, tr.z);
         sleepers.setMatrixAt(idx++, m);
       }
     }

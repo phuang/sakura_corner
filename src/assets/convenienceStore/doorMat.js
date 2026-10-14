@@ -63,14 +63,14 @@ export function createDoorMat() {
   const group = new THREE.Group();
   group.name = 'doorMat';
 
-  // 入口 x∈[6,8]，垫子居中略宽；人行道顶面 y=0.12（见 asphaltRoad.js）
+  // 入口 x∈[6,8]，垫子居中略宽；人行道顶面 y=0.05（见 asphaltRoad.js）
   const W = 1.7, D = 1.15;
   const cx = 7.0;                              // 门洞中心 x=7
   const cz = STORE.Z1 + 0.06 + D / 2;         // 自立面外沿起（z≈3.68）
 
-  const mat = toon('#ffffff', { map: matTexture() });
+  const mat = toon('#ffffff', { map: matTexture(), polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(W, 0.025, D), mat);
-  mesh.position.set(cx, 0.132, cz);
+  mesh.position.set(cx, 0.05 + 0.025 / 2 + 0.001, cz);
   mesh.receiveShadow = true;
   group.add(mesh);
 

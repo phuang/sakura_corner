@@ -7,7 +7,6 @@
 
 import * as THREE from 'three';
 import { toon } from '../../core/materials.js';
-import { concreteTexture } from '../../core/textures.js';
 
 const PAD_TOP = 0.05; // 与人行道/底座顶面一致（petalSystem groundY）
 
@@ -49,35 +48,27 @@ export function createParkingSpaces() {
   const group = new THREE.Group();
   group.name = 'parkingSpace';
 
-  // —— 铺装底板（车站广场车位区 + 禁停带，面向主路 A）——
-  const pad = new THREE.Mesh(
-    new THREE.BoxGeometry(11.8, PAD_TOP, 3.2),
-    toon('#ffffff', { map: concreteTexture(131, '#c6c2b7') })
-  );
-  pad.position.set(-8.2, PAD_TOP / 2, 6.35); // x∈[-14.1,-2.3], z∈[4.75,7.95]
-  pad.receiveShadow = true;
-  group.add(pad);
+  // 车位依托车站广场西人行道地坪（walkWest y=0.05），不重复生成底板以避免 37.8m² 重叠闪烁
+  const lineMat = toon('#dedbd1', { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }); // 磨损白漆
 
-  const lineMat = toon('#dedbd1'); // 磨损白漆
-
-  // —— 车位前沿线（沿 X，z=7.82）——
-  const frontLine = new THREE.Mesh(new THREE.BoxGeometry(10, 0.012, 0.13), lineMat);
-  frontLine.position.set(-8, PAD_TOP + 0.006, 7.82);
+  // —— 车位前沿线（沿 X，z=7.82，底面高出地面 3mm 避免与地坪共面）——
+  const frontLine = new THREE.Mesh(new THREE.BoxGeometry(10, 0.008, 0.13), lineMat);
+  frontLine.position.set(-8, PAD_TOP + 0.007, 7.82);
   group.add(frontLine);
 
-  // —— 分隔立线 ×4（x=-13 / -9.67 / -6.33 / -3，z∈[5.1,7.82]）——
+  // —— 分隔立线 ×4（x=-13 / -9.67 / -6.33 / -3，z∈[5.1,7.75]，止于前沿线内侧边缘，消除共面重叠）——
   for (const x of [-13, -9.67, -6.33, -3]) {
-    const line = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.012, 2.72), lineMat);
-    line.position.set(x, PAD_TOP + 0.006, 6.46);
+    const line = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.008, 2.65), lineMat);
+    line.position.set(x, PAD_TOP + 0.007, 6.425);
     group.add(line);
   }
 
   // —— 禁停区斜纹带（车位西侧缓冲带 x∈[-14.05,-13.15]）——
   const hatch = new THREE.Mesh(
-    new THREE.BoxGeometry(0.9, 0.012, 2.7),
+    new THREE.BoxGeometry(0.9, 0.008, 2.7),
     toon('#ffffff', { map: hatchTexture() })
   );
-  hatch.position.set(-13.6, PAD_TOP + 0.006, 6.46);
+  hatch.position.set(-13.6, PAD_TOP + 0.007, 6.46);
   group.add(hatch);
 
   return group;

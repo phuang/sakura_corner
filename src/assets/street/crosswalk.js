@@ -14,7 +14,7 @@ export function createCrosswalks() {
   const group = new THREE.Group();
   group.name = 'crosswalk';
 
-  const paintMat = toon('#f4f6fa'); // 规范道路白漆（干净通透动漫质感）
+  const paintMat = toon('#f4f6fa', { polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }); // 规范道路白漆（干净通透动漫质感，polygonOffset 彻底杜绝与沥青路面 Z-fighting）
 
   // ================= 斑马线 A（跨主路 A，行人沿 Z 向行走，白条沿 X 方向延展）=================
   // 路宽：z 从 8.1 到 14.3，在路面净宽内等距布置 7 根规范标线
@@ -22,12 +22,12 @@ export function createCrosswalks() {
   const STRIPE_W_A = 0.45;  // 标线条宽（沿 Z）
   const STRIPE_ZS = [8.55, 9.42, 10.29, 11.16, 12.03, 12.90, 13.77];
 
-  const geoA = new THREE.BoxGeometry(STRIPE_LEN_A, 0.012, STRIPE_W_A);
+  const geoA = new THREE.BoxGeometry(STRIPE_LEN_A, 0.008, STRIPE_W_A);
   const instA = new THREE.InstancedMesh(geoA, paintMat, STRIPE_ZS.length);
   {
     const m = new THREE.Matrix4();
     STRIPE_ZS.forEach((z, i) => {
-      m.makeTranslation(7.0, ROAD_TOP + 0.006, z); // 严格居中对齐便利店大门 x=7.0
+      m.makeTranslation(7.0, ROAD_TOP + 0.007, z); // 严格居中对齐便利店大门 x=7.0，标高微凸 3mm 杜绝共面
       instA.setMatrixAt(i, m);
     });
     instA.instanceMatrix.needsUpdate = true;
@@ -41,12 +41,12 @@ export function createCrosswalks() {
   const STRIPE_W_B = 0.45;  // 标线条宽（沿 X）
   const STRIPE_XS = [12.45, 13.32, 14.19, 15.06, 15.93, 16.80];
 
-  const geoB = new THREE.BoxGeometry(STRIPE_W_B, 0.012, STRIPE_LEN_B);
+  const geoB = new THREE.BoxGeometry(STRIPE_W_B, 0.008, STRIPE_LEN_B);
   const instB = new THREE.InstancedMesh(geoB, paintMat, STRIPE_XS.length);
   {
     const m = new THREE.Matrix4();
     STRIPE_XS.forEach((x, i) => {
-      m.makeTranslation(x, ROAD_TOP + 0.006, -3.5); // 位于路 B 斑马线中心 z=-3.5
+      m.makeTranslation(x, ROAD_TOP + 0.007, -3.5); // 位于路 B 斑马线中心 z=-3.5
       instB.setMatrixAt(i, m);
     });
     instB.instanceMatrix.needsUpdate = true;

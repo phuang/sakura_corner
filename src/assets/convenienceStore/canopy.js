@@ -43,10 +43,10 @@ export function createCanopy() {
   slab.receiveShadow = true;
   group.add(slab);
 
-  // —— 底面（带积尘污渍，做旧）——
+  // —— 底面（带积尘污渍，底板微下移避免与悬挑板底面共面闪烁）——
   const underMat = toon('#ffffff', { map: grimeOverlay(143) });
   const under = new THREE.Mesh(new THREE.BoxGeometry(X_B - X_A - 0.1, 0.02, Z_TIP - Z_FACE - 0.1), underMat);
-  under.position.set((X_A + X_B) / 2, TOP_Y - THK - 0.01, (Z_TIP + Z_FACE) / 2);
+  under.position.set((X_A + X_B) / 2, TOP_Y - THK - 0.018, (Z_TIP + Z_FACE) / 2);
   group.add(under);
 
   // —— 前缘深色收边条 ——

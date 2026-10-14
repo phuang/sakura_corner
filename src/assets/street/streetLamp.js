@@ -11,7 +11,7 @@ import { breathing } from '../../core/lighting.js';
 
 const SIDEWALK_TOP = 0.05;
 const LAMPS = [
-  { x: 11.3, z: 7.4, phase: 0 },
+  { x: 11.0, z: 7.3, phase: 0 },   // 街角东侧人行道，微西移避开交通信号灯底座(11.6, 7.7)
   { x: -6.8, z: 7.4, phase: 2.1 },
 ];
 

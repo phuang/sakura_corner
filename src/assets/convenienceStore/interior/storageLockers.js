@@ -9,7 +9,7 @@ import * as THREE from 'three';
 import { toon, metal } from '../../../core/materials.js';
 
 const FLOOR_Y = 0.15;
-const X_WALL = 2.18;      // 西墙内表面
+const X_WALL = 2.195;     // 距西墙内表面(2.18)留 0.015 间隙，避免 z-fighting
 const DEPTH = 0.45;       // 柜深（X）
 const Z_A = 1.0, Z_B = 2.5; // 沿墙范围
 const COLS = 3, ROWS = 4;
@@ -96,8 +96,8 @@ export function createStorageLockers() {
     group.add(shelf);
   }
 
-  // —— 顶板 + 底座 ——
-  const top = new THREE.Mesh(new THREE.BoxGeometry(DEPTH + 0.04, 0.05, W + 0.06), frameMat);
+  // —— 顶板 + 底座（顶板进深保持 DEPTH，避免后缘突入西墙）——
+  const top = new THREE.Mesh(new THREE.BoxGeometry(DEPTH, 0.05, W + 0.06), frameMat);
   top.position.set(X_WALL + DEPTH / 2, FLOOR_Y + HT + 0.025, (Z_A + Z_B) / 2);
   group.add(top);
 

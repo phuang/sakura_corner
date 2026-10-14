@@ -14,8 +14,8 @@ const FLOOR_Y = 0.15;
 const X_A = 6.0, X_B = 7.3;      // 宽度范围（北墙）
 const W = X_B - X_A;             // 1.3
 const DEPTH = 0.55;
-const Z_BACK = -4.32;            // 贴北墙内表面
-const Z_FRONT = Z_BACK + DEPTH;  // -3.77
+const Z_BACK = -4.30;            // 距北墙内表面(-4.32)留 0.02 间隙，避免 z-fighting
+const Z_FRONT = Z_BACK + DEPTH;  // -3.75
 const H = 1.0;
 
 function rng(seed) {

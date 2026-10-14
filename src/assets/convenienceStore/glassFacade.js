@@ -86,10 +86,14 @@ export function createGlassFacade() {
   railE.castShadow = true;
   group.add(railE);
 
-  // —— 底部踢脚槽（深灰金属，盖住室内外高差）——
-  const kickS = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - STORE.X0, BASE_H, 0.18), darkMat);
-  kickS.position.set((STORE.X0 + STORE.X1) / 2, BASE_H / 2, STORE.Z1 - 0.04);
-  group.add(kickS);
+  // —— 底部踢脚槽（深灰金属，盖住室内外高差；门洞 x∈[6,8] 留空，避免与自动门底框共面穿模）——
+  const kickSW = new THREE.Mesh(new THREE.BoxGeometry(6.0 - STORE.X0, BASE_H, 0.18), darkMat);
+  kickSW.position.set((STORE.X0 + 6.0) / 2, BASE_H / 2, STORE.Z1 - 0.04);
+  group.add(kickSW);
+
+  const kickSE = new THREE.Mesh(new THREE.BoxGeometry(STORE.X1 - 8.0, BASE_H, 0.18), darkMat);
+  kickSE.position.set((8.0 + STORE.X1) / 2, BASE_H / 2, STORE.Z1 - 0.04);
+  group.add(kickSE);
 
   const kickE = new THREE.Mesh(new THREE.BoxGeometry(0.18, BASE_H, STORE.X1 - STORE.X0), darkMat);
   kickE.position.set(STORE.X1 - 0.04, BASE_H / 2, (STORE.Z0 + STORE.Z1) / 2);

@@ -13,7 +13,7 @@ import { concreteTexture, grimeOverlay } from '../../core/textures.js';
 const X_W = -1.0;   // 西墙内表面
 const X_E = 0.8;    // 东墙内表面
 const Z_S = -2.0;   // 巷口（人行道带北缘）
-const Z_N = -7.0;   // 尽头铁门
+const Z_N = -6.55;  // 尽头铁门（严格齐平站台北边缘 PLATFORM_NORTH，避让电车车壁 z=-6.68）
 const WALL_H = 2.5;
 
 export function createAlleyEntrance() {
